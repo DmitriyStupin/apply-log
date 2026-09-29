@@ -15,10 +15,43 @@ import {
   Settings,
   House,
 } from "lucide-react"
+import { NavLink, useLocation } from "react-router-dom"
 
 export const AppSidebar = () => {
   const { state } = useSidebar()
   const isCollapsed = state === "collapsed"
+  const location = useLocation()
+
+  const mainMenuItems = [
+    {
+      title: "Главная",
+      url: "/",
+      icon: House,
+    },
+    {
+      title: "Отклики",
+      url: "/applications",
+      icon: MessageSquareReplyIcon,
+    },
+    {
+      title: "Компании",
+      url: "/companies",
+      icon: Building2,
+    },
+  ]
+
+  const footerMenuItems = [
+    {
+      title: "Настройки",
+      url: "/settings",
+      icon: Settings,
+    },
+    {
+      title: "Пользователь",
+      url: "/user",
+      icon: User2,
+    },
+  ]
 
   return (
     <Sidebar variant={"floating"} collapsible={"icon"}>
@@ -33,40 +66,36 @@ export const AppSidebar = () => {
       </SidebarHeader>
 
       <SidebarContent>
-        <SidebarMenu className="flex flex-col gap-1 px-1">
-          <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Главная">
-              <House />
-              <span>Главная</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Отклики">
-              <MessageSquareReplyIcon />
-              <span>Отклики</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Компании">
-              <Building2 />
-              <span>Компании</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
+        <SidebarMenu className="flex flex-col gap-1 px-2">
+          {mainMenuItems.map((menuItem) => (
+            <SidebarMenuItem key={menuItem.url}>
+              <SidebarMenuButton
+                render={<NavLink to={menuItem.url} />}
+                tooltip={menuItem.title}
+                isActive={location.pathname === menuItem.url}
+              >
+                <menuItem.icon />
+                <span>{menuItem.title}</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
         </SidebarMenu>
       </SidebarContent>
 
       <SidebarFooter>
         <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Настройки">
-              <Settings /> Настройки
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Username">
-              <User2 /> Username
-            </SidebarMenuButton>
-          </SidebarMenuItem>
+          {footerMenuItems.map((menuItem) => (
+            <SidebarMenuItem key={menuItem.url}>
+              <SidebarMenuButton
+                render={<NavLink to={menuItem.url} />}
+                tooltip={menuItem.title}
+                isActive={location.pathname === menuItem.url}
+              >
+                <menuItem.icon />
+                <span>{menuItem.title}</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
